@@ -219,17 +219,17 @@ ifndef BUILD_ID
 endif
 .KATI_READONLY := BUILD_ID
 
-ifndef BUILD_DATETIME
+#ifndef BUILD_DATETIME
   # Used to reproduce builds by setting the same time. Must be the number
   # of seconds since the Epoch.
   BUILD_DATETIME := $(shell date +%s)
-endif
+#endif
 
 DATE := date -d @$(BUILD_DATETIME)
 .KATI_READONLY := DATE
 
-HAS_BUILD_NUMBER := true
-ifndef BUILD_NUMBER
+#HAS_BUILD_NUMBER := true
+#ifndef BUILD_NUMBER
   # BUILD_NUMBER should be set to the source control value that
   # represents the current state of the source code.  E.g., a
   # perforce changelist number or a git hash.  Can be an arbitrary string
@@ -241,7 +241,8 @@ ifndef BUILD_NUMBER
   # anyone trying to parse it as an integer will probably get "0".
   BUILD_NUMBER := $(BUILD_DATETIME)
   HAS_BUILD_NUMBER := false
-endif
+#endif
+
 .KATI_READONLY := BUILD_NUMBER HAS_BUILD_NUMBER
 
 # Everything should be using BUILD_DATETIME_FROM_FILE instead.
