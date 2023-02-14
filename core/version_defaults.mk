@@ -106,4 +106,27 @@ ifndef PLATFORM_SECURITY_PATCH
     PLATFORM_SECURITY_PATCH := 2023-01-05
 endif
 
+ifndef BUILD_ID
+  # Used to signify special builds.  E.g., branches and/or releases,
+  # like "M5-RC7".  Can be an arbitrary string, but must be a single
+  # word and a valid file name.
+  #
+  # If there is no BUILD_ID set, make it obvious.
+  BUILD_ID := BAIKAL13-$(shell date +%Y%m%d)
+endif
+
+ifndef BUILD_NUMBER
+  # BUILD_NUMBER should be set to the source control value that
+  # represents the current state of the source code.  E.g., a
+  # perforce changelist number or a git hash.  Can be an arbitrary string
+  # (to allow for source control that uses something other than numbers),
+  # but must be a single word and a valid file name.
+  #
+  # If no BUILD_NUMBER is set, create a useful "I am an engineering build
+  # from this date/time" value.  Make it start with a non-digit so that
+  # anyone trying to parse it as an integer will probably get "0".
+  BUILD_NUMBER := $(shell date +%s)
+endif
+
 include $(BUILD_SYSTEM)/version_util.mk
+
