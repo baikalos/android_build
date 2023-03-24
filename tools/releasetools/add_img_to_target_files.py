@@ -805,7 +805,7 @@ def AddImagesToTargetFiles(filename):
     output_zip = None
   else:
     output_zip = zipfile.ZipFile(filename, "a",
-                                 compression=zipfile.ZIP_DEFLATED,
+                                 compression=zipfile.ZIP_STORED,
                                  allowZip64=True)
 
   # Always make input_tmp/IMAGES available, since we may stage boot / recovery

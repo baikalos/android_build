@@ -106,4 +106,13 @@ ifndef PLATFORM_SECURITY_PATCH
     PLATFORM_SECURITY_PATCH := 2023-09-05
 endif
 
+ifndef BUILD_ID
+  # Used to signify special builds.  E.g., branches and/or releases,
+  # like "M5-RC7".  Can be an arbitrary string, but must be a single
+  # word and a valid file name.
+  #
+  # If there is no BUILD_ID set, make it obvious.
+  BUILD_ID := BAIKAL13-$(shell date +%Y%m%d)
+endif
+
 include $(BUILD_SYSTEM)/version_util.mk
