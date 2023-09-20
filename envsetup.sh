@@ -1216,6 +1216,12 @@ function jgrep()
         -exec grep --color -n "$@" {} +
 }
 
+function xgrep()
+{
+    find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f -name "*\.xml" \
+        -exec grep --color -n "$@" {} +
+}
+
 function rsgrep()
 {
     find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f -name "*\.rs" \
@@ -1231,6 +1237,12 @@ function ktgrep()
 function cgrep()
 {
     find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f \( -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) \
+        -exec grep --color -n "$@" {} +
+}
+
+function mgrep()
+{
+    find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f \( -name '*.mk' -o -name '*.bp' \) \
         -exec grep --color -n "$@" {} +
 }
 
