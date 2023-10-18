@@ -223,6 +223,9 @@ ifndef BUILD_DATETIME
   # Used to reproduce builds by setting the same time. Must be the number
   # of seconds since the Epoch.
   BUILD_DATETIME := $(shell date +%s)
+  $(warning $(LOCAL_MODULE_MAKEFILE): Build date time set to $(BUILD_DATETIME))
+else
+$(warning $(LOCAL_MODULE_MAKEFILE): Build date time already set)
 endif
 
 DATE := date -d @$(BUILD_DATETIME)
