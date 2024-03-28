@@ -39,13 +39,16 @@
 }
 
 # Please specify classes to be kept explicitly in your package's configuration.
-# -keep class * extends android.app.Activity
-# -keep class * extends android.view.View
-# -keep class * extends android.app.Service
-# -keep class * extends android.content.BroadcastReceiver
-# -keep class * extends android.content.ContentProvider
-# -keep class * extends android.preference.Preference
-# -keep class * extends android.app.BackupAgent
+-keep class * extends android.app.Activity
+-keep class * extends android.view.View
+-keep class * extends android.app.Service
+-keep class * extends android.content.BroadcastReceiver
+-keep class * extends android.content.ContentProvider
+-keep class * extends android.preference.Preference
+-keep class * extends android.app.BackupAgent
+
+-keep class androidx.startup.AppInitializer
+-keep class * extends androidx.startup.Initializer
 
 # Parcelable CREATORs must be kept for Parcelable functionality
 -keep class * implements android.os.Parcelable {
