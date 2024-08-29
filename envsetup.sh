@@ -2014,7 +2014,6 @@ validate_current_shell
 source_vendorsetup
 addcompletions
 
-
 if [ ! -z ${USE_CCACHE} ]; then
     # check and set ccache path on envsetup
     if [ -z ${CCACHE_EXEC} ]; then
