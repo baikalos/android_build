@@ -887,7 +887,9 @@ endif
 
 BUILD_NUMBER_FROM_FILE := $$(cat $(SOONG_OUT_DIR)/build_number.txt)
 BUILD_HOSTNAME_FROM_FILE := $$(cat $(SOONG_OUT_DIR)/build_hostname.txt)
-BUILD_DATETIME_FROM_FILE := $$(cat $(BUILD_DATETIME_FILE))
+# BUILD_DATETIME_FROM_FILE := $$(cat $(BUILD_DATETIME_FILE))
+BUILD_DATETIME_FROM_FILE := $(shell date +%s)
+$(warning $(LOCAL_MODULE_MAKEFILE): Build date time set to $(BUILD_DATETIME_FROM_FILE))
 
 # SEPolicy versions
 

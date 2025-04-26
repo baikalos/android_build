@@ -5909,7 +5909,7 @@ $(BUILT_OTATOOLS_PACKAGE): $(SOONG_ZIP) $(ZIP2ZIP)
 	$(call copy-files-with-structure,$(PRIVATE_OTATOOLS_PACKAGE_FILES),$(HOST_OUT)/,$(PRIVATE_ZIP_ROOT))
 	$(call copy-files-with-structure,$(PRIVATE_OTATOOLS_RELEASETOOLS),build/make/tools/,$(PRIVATE_ZIP_ROOT))
 	cp $(SOONG_ZIP) $(ZIP2ZIP) $(MERGE_ZIPS) $(PRIVATE_ZIP_ROOT)/bin/
-	$(SOONG_ZIP) -o $@ -C $(PRIVATE_ZIP_ROOT) -D $(PRIVATE_ZIP_ROOT)
+	$(SOONG_ZIP) -parallel 64 -o $@ -C $(PRIVATE_ZIP_ROOT) -D $(PRIVATE_ZIP_ROOT)
 
 $(call declare-1p-container,$(BUILT_OTATOOLS_PACKAGE),build)
 $(call declare-container-license-deps,$(INTERNAL_OTATOOLS_PACKAGE_FILES) $(INTERNAL_OTATOOLS_RELEASETOOLS),$(BUILT_OTATOOLS_PACKAGE):)
@@ -7135,7 +7135,7 @@ endif
 
 $(BUILT_TARGET_FILES_PACKAGE): $(BUILT_TARGET_FILES_DIR)
 	@echo "Packaging target files: $@"
-	$(hide) $(SOONG_ZIP) -d -o $@ -C $(zip_root) -r $@.list -sha256
+	$(hide) $(SOONG_ZIP) -parallel 64 -d -o $@ -C $(zip_root) -r $@.list -sha256
 
 .PHONY: target-files-package
 target-files-package: $(BUILT_TARGET_FILES_PACKAGE)
@@ -7302,7 +7302,7 @@ $(APPCOMPAT_ZIP): $(SOONG_ZIP)
 	$(hide) rm -rf $@ $(PRIVATE_LIST_FILE)
 	$(hide) mkdir -p $(dir $@) $(PRODUCT_OUT)/appcompat $(dir $(PRIVATE_LIST_FILE))
 	$(hide) find $(PRODUCT_OUT)/appcompat | sort >$(PRIVATE_LIST_FILE)
-	$(hide) $(SOONG_ZIP) -d -o $@ -C $(PRODUCT_OUT)/appcompat -l $(PRIVATE_LIST_FILE)
+	$(hide) $(SOONG_ZIP) -parallel 64 -d -o $@ -C $(PRODUCT_OUT)/appcompat -l $(PRIVATE_LIST_FILE)
 
 # The mac build doesn't build dex2oat, so create the zip file only if the build OS is linux.
 ifeq ($(BUILD_OS),linux)
@@ -7315,7 +7315,7 @@ $(DEXPREOPT_TOOLS_ZIP): $(dexpreopt_tools_deps)
 $(DEXPREOPT_TOOLS_ZIP): PRIVATE_DEXPREOPT_TOOLS_DEPS := $(dexpreopt_tools_deps)
 $(DEXPREOPT_TOOLS_ZIP): $(SOONG_ZIP)
 	$(hide) mkdir -p $(dir $@)
-	$(hide) $(SOONG_ZIP) -d -o $@ -j $(addprefix -f ,$(PRIVATE_DEXPREOPT_TOOLS_DEPS)) -f $$(realpath $(DEX2OAT))
+	$(hide) $(SOONG_ZIP) -parallel 64 -d -o $@ -j $(addprefix -f ,$(PRIVATE_DEXPREOPT_TOOLS_DEPS)) -f $$(realpath $(DEX2OAT))
 $(call declare-1p-target,$(DEXPREOPT_TOOLS_ZIP),)
 endif # DEX2OAT is set
 endif # BUILD_OS == linux
@@ -7345,7 +7345,7 @@ endif #!TARGET_BUILD_UNBUNDLED
 
 $(DEXPREOPT_CONFIG_ZIP): $(SOONG_ZIP)
 	$(hide) mkdir -p $(dir $@) $(PRODUCT_OUT)/dexpreopt_config
-	$(hide) $(SOONG_ZIP) -d -o $@ -C $(PRODUCT_OUT)/dexpreopt_config -D $(PRODUCT_OUT)/dexpreopt_config $(PRIVATE_DEXPREOPT_CONFIG_ZIP_PARAMS)
+	$(hide) $(SOONG_ZIP) -parallel 64 -d -o $@ -C $(PRODUCT_OUT)/dexpreopt_config -D $(PRODUCT_OUT)/dexpreopt_config $(PRIVATE_DEXPREOPT_CONFIG_ZIP_PARAMS)
 
 .PHONY: dexpreopt_config_zip
 dexpreopt_config_zip: $(DEXPREOPT_CONFIG_ZIP)
@@ -7382,7 +7382,7 @@ $(SYMBOLS_ZIP): $(SOONG_ZIP) $(SYMBOLS_MAP)
 	$(hide) mkdir -p $(TARGET_OUT_UNSTRIPPED) $(dir $(PRIVATE_LIST_FILE)) $(PRIVATE_MAPPING_PACKAGING_DIR)
 	# Find all of the files in the symbols directory and zip them into the symbols zip.
 	$(hide) find -L $(TARGET_OUT_UNSTRIPPED) -type f | sort >$(PRIVATE_LIST_FILE)
-	$(hide) $(SOONG_ZIP) --ignore_missing_files -d -o $@ -C $(OUT_DIR)/.. -l $(PRIVATE_LIST_FILE)
+	$(hide) $(SOONG_ZIP) -parallel 64 --ignore_missing_files -d -o $@ -C $(OUT_DIR)/.. -l $(PRIVATE_LIST_FILE)
 	# Find all of the files in the symbols mapping directory and merge them into the symbols mapping textproto.
 	$(hide) find -L $(PRIVATE_MAPPING_PACKAGING_DIR) -type f | sort >$(PRIVATE_LIST_FILE)
 	$(hide) $(SYMBOLS_MAP) -merge $(SYMBOLS_MAPPING) -ignore_missing_files @$(PRIVATE_LIST_FILE)
@@ -7410,7 +7410,7 @@ $(COVERAGE_ZIP): $(SOONG_ZIP)
 	$(hide) rm -rf $@ $(PRIVATE_LIST_FILE)
 	$(hide) mkdir -p $(dir $@) $(TARGET_OUT_COVERAGE) $(dir $(PRIVATE_LIST_FILE))
 	$(hide) find $(TARGET_OUT_COVERAGE) | sort >$(PRIVATE_LIST_FILE)
-	$(hide) $(SOONG_ZIP) -d -o $@ -C $(TARGET_OUT_COVERAGE) -l $(PRIVATE_LIST_FILE)
+	$(hide) $(SOONG_ZIP) -parallel 64 -d -o $@ -C $(TARGET_OUT_COVERAGE) -l $(PRIVATE_LIST_FILE)
 
 $(call declare-1p-container,$(COVERAGE_ZIP),)
 ifeq (,$(TARGET_BUILD_UNBUNDLED))
@@ -7430,7 +7430,7 @@ ifeq (true,$(CLANG_COVERAGE))
   LLVM_COVERAGE_TOOLS_ZIP := $(PRODUCT_OUT)/llvm-profdata.zip
 
   $(LLVM_COVERAGE_TOOLS_ZIP): $(SOONG_ZIP)
-	$(hide) $(SOONG_ZIP) -d -o $@ -C $(LLVM_PREBUILTS_BASE)/linux-x86/$(LLVM_PREBUILTS_VERSION) -f $(LLVM_PROFDATA) -f $(LIBCXX) -f $(LLVM_COV)
+	$(hide) $(SOONG_ZIP) -parallel 64 -d -o $@ -C $(LLVM_PREBUILTS_BASE)/linux-x86/$(LLVM_PREBUILTS_VERSION) -f $(LLVM_PROFDATA) -f $(LIBCXX) -f $(LLVM_COV)
 
   $(call dist-for-goals,droidcore-unbundled apps_only,$(LLVM_COVERAGE_TOOLS_ZIP))
 endif
@@ -7473,7 +7473,7 @@ $(JACOCO_REPORT_CLASSES_ALL): PRIVATE_HOST_PROGUARD_USAGE_DIR := $(call intermed
 $(JACOCO_REPORT_CLASSES_ALL) :
 	@echo "Collecting uninstrumented classes"
 	mkdir -p $(PRIVATE_TARGET_JACOCO_DIR) $(PRIVATE_HOST_JACOCO_DIR) $(PRIVATE_TARGET_PROGUARD_USAGE_DIR) $(PRIVATE_HOST_PROGUARD_USAGE_DIR)
-	$(SOONG_ZIP) -o $@ -L 0 \
+	$(SOONG_ZIP) -parallel 64 -o $@ -L 0 \
 	  -C $(PRIVATE_TARGET_JACOCO_DIR) -P out/target/common/obj -D $(PRIVATE_TARGET_JACOCO_DIR) \
 	  -C $(PRIVATE_HOST_JACOCO_DIR) -P out/target/common/obj -D $(PRIVATE_HOST_JACOCO_DIR) \
 	  -C $(PRIVATE_TARGET_PROGUARD_USAGE_DIR) -P out/target/common/obj -D $(PRIVATE_TARGET_PROGUARD_USAGE_DIR) \
@@ -7515,7 +7515,7 @@ $(PROGUARD_DICT_ZIP): $(SOONG_ZIP) $(foreach m,$(_proguard_dict_zip_modules),$(A
 	# Zip all of the files in PROGUARD_DICTIONARY_FILES.
 	echo -n > $@.tmparglist
 	$(foreach arg,$(PRIVATE_SOONG_ZIP_ARGUMENTS),printf "%s\n" "$(arg)" >> $@.tmparglist$(newline))
-	$(SOONG_ZIP) -d -o $@ @$@.tmparglist
+	$(SOONG_ZIP) -parallel 64 -d -o $@ @$@.tmparglist
 	rm -f $@.tmparglist
 
 # The path to the zip file containing mappings from dictionary hashes to filenames.
