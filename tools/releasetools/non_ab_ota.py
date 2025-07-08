@@ -222,7 +222,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print("Target: {}".format(target_info.fingerprint))
 
   # Build info
-  buildid = target_info.GetBuildProp("ro.modversion")
+  buildid = target_info.GetBuildProp("ro.build.id")
   androidver = target_info.GetBuildProp("ro.build.version.release")
   buildidn = target_info.GetBuildProp("ro.build.id")
   buildday = target_info.GetBuildProp("ro.build.date")
