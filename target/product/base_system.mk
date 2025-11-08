@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
+#    DynamicSystemInstallationService
+#    LocalTransport
+
+
 # Base modules and settings for the system partition.
 PRODUCT_PACKAGES += \
     abx \
@@ -86,7 +90,6 @@ PRODUCT_PACKAGES += \
     dump.erofs \
     dumpstate \
     dumpsys \
-    DynamicSystemInstallationService \
     e2fsck \
     ExtShared \
     flags_health_check \
@@ -205,7 +208,6 @@ PRODUCT_PACKAGES += \
     linkerconfig \
     llkd \
     lmkd \
-    LocalTransport \
     locksettings \
     logcat \
     logd \
