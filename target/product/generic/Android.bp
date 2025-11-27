@@ -748,6 +748,7 @@ system_image_defaults {
             "start_with_lockagent",
             "strace",
             "su",
+            "baikal_su",
             "tinycap",
             "tinyhostless",
             "tinymix",
