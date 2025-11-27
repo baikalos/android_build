@@ -755,7 +755,9 @@ endif
 # $5 partition tag
 # $6 output file
 define _apkcerts_write_line
-$(hide) echo 'name="$(1).apk" certificate="$2" private_key="$3"$(if $(4), compressed="$4")$(if $(5), partition="$5")' >> $6
+
+$(info BAIKAL_DEBUG: Writing cert for $(1), processed name: $(subst mineage,lineage,$(1)))
+$(hide) echo 'name="$(subst mineage,lineage,$(1)).apk" certificate="$2" private_key="$3"$(if $(4), compressed="$4")$(if $(5), partition="$5")' >> $6
 
 endef
 
