@@ -224,7 +224,7 @@ ifndef BUILD_ID
   # word and a valid file name.
   #
   # If there is no BUILD_ID set, make it obvious.
-  BUILD_ID := UNKNOWN
+  BUILD_ID := BAIKAL16-$(shell date +%Y%m%d)
 endif
 .KATI_READONLY := BUILD_ID
 
