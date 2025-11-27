@@ -3,7 +3,19 @@ include $(CLEAR_VARS)
 enforce_rro_product_name := $(subst lineage_,aosp_,$(PRODUCT_NAME))
 enforce_rro_override_module := $(subst Lineage,AOSP,$(subst lineage,aosp,$(subst lineageos,aosp,$(enforce_rro_source_module))))
 enforce_rro_module := $(enforce_rro_override_module)__$(enforce_rro_product_name)__auto_generated_rro_$(enforce_rro_partition)
+
+$(info generate enforce RRO $(enforce_rro_source_module) )
+
+CLEAN_DEVICE := $(subst lineage_,,$(PRODUCT_DEVICE))
+# enforce_rro_source_module := $(subst lineage,mineage,$(enforce_rro_source_module))
+# enforce_rro_module := $(enforce_rro_source_module)__$(CLEAN_DEVICE)__auto_generated_rro_$(enforce_rro_partition)
+
+
 LOCAL_PACKAGE_NAME := $(enforce_rro_module)
+
+$(info RRO_DEBUG: PRODUCT_DEVICE is $(PRODUCT_DEVICE))
+$(info RRO_DEBUG: enforce_rro_module is $(enforce_rro_module))
+$(info RRO_DEBUG: LOCAL_PACKAGE_NAME is $(LOCAL_PACKAGE_NAME))
 
 intermediates := $(call intermediates-dir-for,APPS,$(LOCAL_PACKAGE_NAME),,COMMON)
 rro_android_manifest_file := $(intermediates)/AndroidManifest.xml
